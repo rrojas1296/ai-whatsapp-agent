@@ -1,0 +1,27 @@
+{
+  "name": "ai-whatsapp-agent",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "build": "turbo run build",
+    "db:docker": "docker compose -f compose.dev.yaml up"
+  },
+  "devDependencies": {
+    "turbo": "^2.11.10"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.16.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.16.1"
+}

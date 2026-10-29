@@ -1,0 +1,38 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "275d7e45-4bcc-47b1-83cb-3e35f1215dde",
+  "prevIds": [
+    "27301d90-575c-4a95-81df-302179619f1d"
+  ],
+  "footprints": [
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "users",
+        "role"
+      ],
+      "writes": [
+        "s|colprop|public.users.role.notNull"
+      ],
+      "reads": [
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.users.role"
+      ],
+      "sqlHash": "b1cbc0f6b8b1ef56"
+    }
+  ],
+  "deltas": [
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"users\",\"role\"]",
+      "set": {
+        "notNull": true
+      }
+    }
+  ]
+}
