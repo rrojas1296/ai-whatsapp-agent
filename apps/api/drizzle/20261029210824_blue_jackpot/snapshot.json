@@ -1,0 +1,90 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "bf299f3d-4464-4cc4-b574-a3ab4ecc448b",
+  "prevIds": [
+    "c80d0921-197c-4f1a-9986-e15f8aafb7fe"
+  ],
+  "footprints": [
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "business",
+        "ownerId"
+      ],
+      "writes": [
+        "s|col|public.business.ownerId",
+        "n|col|public.business.ownerId",
+        "e|col|public.business.ownerId"
+      ],
+      "reads": [
+        "n|tbl|public.business",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "business"
+      ],
+      "writes": [
+        "s|fk|public.business.business_ownerId_users_id_fkey",
+        "n|fk|public.business.business_ownerId_users_id_fkey",
+        "e|fk|public.business.business_ownerId_users_id_fkey",
+        "n|con|public.business.business_ownerId_users_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.business",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.business.ownerId",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "business",
+        "name": "ownerId",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "business",
+        "name": "business_ownerId_users_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "ownerId"
+        ],
+        "schemaTo": "public",
+        "tableTo": "users",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    }
+  ]
+}

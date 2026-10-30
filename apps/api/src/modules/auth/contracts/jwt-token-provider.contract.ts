@@ -1,9 +1,13 @@
-import { AuthTokens, TokenType } from "../models/auth-tokens.model.js";
-import { PayloadJwt } from "../models/payload-jwt.model.js";
+import {
+  AccessTokenPayload,
+  RefreshTokenPayload,
+  Tokens,
+  TokenType,
+} from "../types/models/tokens.model.js";
 
 export interface IJwtTokenProvider {
-  generateTokens(payload: PayloadJwt): Promise<AuthTokens>;
-  verifyToken(token: string, type: TokenType): Promise<PayloadJwt>;
+  generateTokens(payload: AccessTokenPayload): Promise<Tokens>;
+  verifyToken(token: string, type: TokenType): Promise<AccessTokenPayload | RefreshTokenPayload>;
 }
 
 export const JWT_TOKEN_PROVIDER = Symbol("JWT_TOKEN_PROVIDER");

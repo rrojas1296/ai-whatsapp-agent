@@ -1,41 +1,56 @@
 import { Injectable } from "@nestjs/common";
-import { UserCredendials } from "../models/user-crendentials.model.js";
 import { DrizzleService } from "../../../database/drizzle/drizzle.service.js";
 import { users } from "../../../database/drizzle/schemas/users.schema.js";
 import { and, eq } from "drizzle-orm";
 import { sessions } from "../../../database/drizzle/schemas/sessions.schema.js";
-import { NewUser } from "../models/new-user.model.js";
-import { RegisterUserInput } from "../models/register-user-input.model.js";
 import { IAuthRepository } from "../contracts/auth-repository.contract.js";
+import { InsertUser, NewUser, UserCredentials } from "../types/models/user.model.js";
+import { InsertSession } from "../types/models/sessions.model.js";
 
 @Injectable()
 export class AuthRepository implements IAuthRepository {
-  constructor(private drizzle: DrizzleService) {}
+  constructor(private readonly drizzle: DrizzleService) {}
 
-  async findUserByEmail(email: string): Promise<UserCredendials> {
+  async findUserCredentials(email: string): Promise<UserCredentials | null> {
     const [user] = await this.drizzle.db
-      .select({ email: users.email, passwordHash: users.passwordHash })
-      .from(users)
-      .where(and(eq(users.email, email), eq(users.isDeleted, false)));
-    return user;
-  }
-
-  async createUser(data: Omit<RegisterUserInput, "password">, hash: string): Promise<NewUser> {
-    const [newUser] = await this.drizzle.db
-      .insert(users)
-      .values({ ...data, passwordHash: hash })
-      .returning({
+      .select({
         email: users.email,
         id: users.id,
+        passwordHash: users.passwordHash,
         role: users.role,
-      });
+      })
+      .from(users)
+      .where(and(eq(users.email, email), eq(users.isDeleted, false)))
+      .limit(1);
+    return user ?? null;
+  }
+
+  async emailInUse(email: string): Promise<boolean> {
+    const [user] = await this.drizzle.db
+      .select({
+        email: users.email,
+      })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+    return Boolean(user);
+  }
+
+  async createUser(data: InsertUser): Promise<NewUser> {
+    const [newUser] = await this.drizzle.db.insert(users).values(data).returning({
+      email: users.email,
+      id: users.id,
+      role: users.role,
+    });
     return newUser;
   }
 
-  async createSession(userId: string, refreshHash: string): Promise<string> {
+  async createSession(data: InsertSession): Promise<string> {
+    const { userId, refreshHash, id } = data;
     const [newSession] = await this.drizzle.db
       .insert(sessions)
       .values({
+        id,
         userId,
         refreshHash,
       })

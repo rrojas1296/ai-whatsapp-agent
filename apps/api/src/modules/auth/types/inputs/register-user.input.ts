@@ -1,4 +1,4 @@
-import { UserRole } from "../../../database/drizzle/schemas/users.schema.js";
+import { UserRole } from "../models/user.model.js";
 
 export interface RegisterUserInput {
   firstName: string;

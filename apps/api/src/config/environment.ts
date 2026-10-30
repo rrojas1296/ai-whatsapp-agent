@@ -14,8 +14,14 @@ const isPostgresUrl = (val: string) => {
   }
 };
 
+export const NodeEnvEnum = {
+  DEV: "development",
+  PROD: "production",
+} as const;
+
 export const validationSchema = z.object({
   PORT: z.coerce.number(),
+  NODE_ENV: z.enum(NodeEnvEnum),
   DATABASE_URL: z.string().refine(isPostgresUrl),
   REFRESH_SECRET: z.string().max(32),
   ACCESS_SECRET: z.string().max(32),

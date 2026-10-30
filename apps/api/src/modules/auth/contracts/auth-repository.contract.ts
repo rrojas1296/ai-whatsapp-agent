@@ -1,13 +1,14 @@
-import { NewUser } from "../models/new-user.model.js";
-import { RegisterUserInput } from "../models/register-user-input.model.js";
-import { UserCredendials } from "../models/user-crendentials.model.js";
+import { InsertSession } from "../types/models/sessions.model.js";
+import { InsertUser, NewUser, UserCredentials } from "../types/models/user.model.js";
 
 export interface IAuthRepository {
-  findUserByEmail(email: string): Promise<UserCredendials>;
+  findUserCredentials(email: string): Promise<UserCredentials | null>;
 
-  createUser(data: Omit<RegisterUserInput, "password">, hash: string): Promise<NewUser>;
+  emailInUse(email: string): Promise<boolean>;
 
-  createSession(userId: string, refreshHash: string): Promise<string>;
+  createUser(data: InsertUser): Promise<NewUser>;
+
+  createSession(data: InsertSession): Promise<string>;
 }
 
 export const AUTH_REPOSITORY = Symbol("AUTH_REPOSITORY");
